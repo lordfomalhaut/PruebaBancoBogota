@@ -1,14 +1,5 @@
 
 
-## Requisitos
-- Node 18+
-- npm
-- (opcional) Docker
-
-## Instalar
-1. `cd backend`
-2. `npm install`
-
 ## Inicializar DB con datos de prueba
 `npm run seed`
 
