@@ -1,4 +1,4 @@
-# Portal Capacitaciones - Backend (Node.js + SQLite)
+
 
 ## Requisitos
 - Node 18+
