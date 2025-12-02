@@ -1,0 +1,45 @@
+<div class="profile-container">
+  <div class="header">
+    <h1>Mi Progreso</h1>
+    <button mat-raised-button color="primary" (click)="progressService.refresh().subscribe()" 
+            [disabled]="progressService.loading()">
+      <span *ngIf="!progressService.loading()">🔄 Actualizar</span>
+      <span *ngIf="progressService.loading()">Cargando...</span>
+    </button>
+  </div>
+
+  <div *ngIf="progressService.loading()" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando progreso...</p>
+  </div>
+
+  <div *ngIf="progressService.error()" class="error-container">
+    <p class="error-message">⚠️ {{ progressService.error() }}</p>
+    <button mat-raised-button color="primary" (click)="progressService.refresh().subscribe()">
+      Reintentar
+    </button>
+  </div>
+
+  <div *ngIf="!progressService.loading() && !progressService.error()" class="progress-grid">
+    <mat-card *ngFor="let p of progressService.progress()" class="progress-card">
+      <mat-card-header>
+        <mat-card-title>{{ p.title }}</mat-card-title>
+        <mat-card-subtitle>Módulo: {{ p.module }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="progress-info">
+          <mat-chip [color]="getStatusColor(p.status)" selected>
+            {{ p.status }}
+          </mat-chip>
+          <p class="date">Actualizado: {{ p.updated_at | date:'short' }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!progressService.loading() && !progressService.error() && progressService.progress().length === 0" 
+       class="empty-state">
+    <p>No tienes cursos en progreso aún</p>
+    <p class="hint">Ve a la sección de cursos para comenzar</p>
+  </div>
+</div>

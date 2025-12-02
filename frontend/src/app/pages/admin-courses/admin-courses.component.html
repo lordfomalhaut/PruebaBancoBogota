@@ -1,0 +1,78 @@
+<div class="admin-container">
+  <div class="header">
+    <h1>Administrar Cursos</h1>
+    <button mat-raised-button color="primary" (click)="load()" 
+            [disabled]="coursesService.loading()">
+      <span *ngIf="!coursesService.loading()">🔄 Actualizar</span>
+      <span *ngIf="coursesService.loading()">Cargando...</span>
+    </button>
+  </div>
+
+  <mat-card class="create-card">
+    <mat-card-header>
+      <mat-card-title>Crear Nuevo Curso</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>Módulo</mat-label>
+          <input matInput [(ngModel)]="newCourse.module" placeholder="Ej: Módulo 1">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput [(ngModel)]="newCourse.title" placeholder="Nombre del curso">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción</mat-label>
+          <input matInput [(ngModel)]="newCourse.description" 
+                    placeholder="Descripción del curso">
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="create()">
+        ➕ Crear Curso
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div class="list-section">
+    <h2>Listado de Cursos</h2>
+
+    <div *ngIf="coursesService.loading()" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando cursos...</p>
+    </div>
+
+    <div *ngIf="coursesService.error()" class="error-container">
+      <p class="error-message">⚠️ {{ coursesService.error() }}</p>
+      <button mat-raised-button color="primary" (click)="load()">
+        Reintentar
+      </button>
+    </div>
+
+    <div *ngIf="!coursesService.loading() && !coursesService.error()" class="courses-grid">
+      <mat-card *ngFor="let c of coursesService.courses()" class="course-card">
+        <mat-card-header>
+          <mat-card-title>{{ c.title }}</mat-card-title>
+          <mat-card-subtitle>Módulo: {{ c.module }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ c.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="warn" (click)="delete(c.id)">
+            🗑️ Eliminar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div *ngIf="!coursesService.loading() && !coursesService.error() && coursesService.courses().length === 0" 
+         class="empty-state">
+      <p>No hay cursos creados</p>
+    </div>
+  </div>
+</div>

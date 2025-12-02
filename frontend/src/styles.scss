@@ -1,0 +1,119 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$indigo-palette,
+      secondary: mat.$purple-palette,
+      tertiary: mat.$teal-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  color-scheme: light;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 50%, #f0f4f8 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  min-height: 100vh;
+}
+
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+mat-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  transition: all 0.3s ease;
+}
+
+button[mat-raised-button],
+button[mat-flat-button],
+button[mat-stroked-button] {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  transition: all 0.3s ease !important;
+  
+  &[color="primary"] {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4) !important;
+    }
+  }
+  
+  &[color="accent"] {
+    background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%) !important;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4) !important;
+    }
+  }
+}
+
+mat-form-field {
+  .mat-mdc-text-field-wrapper {
+    border-radius: 8px !important;
+  }
+  
+  &.mat-focused {
+    .mat-mdc-text-field-wrapper {
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+    }
+  }
+}
+
+mat-spinner {
+  circle {
+    stroke: #6366f1 !important;
+  }
+}
+
+mat-chip {
+  font-weight: 500 !important;
+  border-radius: 16px !important;
+  
+  &[color="primary"] {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    color: white !important;
+  }
+  
+  &[color="accent"] {
+    background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%) !important;
+    color: white !important;
+  }
+}

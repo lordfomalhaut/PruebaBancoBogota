@@ -1,0 +1,126 @@
+.profile-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+    border-radius: 16px;
+    border-left: 4px solid #8b5cf6;
+
+    h1 {
+      margin: 0;
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+  }
+
+  .loading-container,
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+
+    p {
+      margin: 0;
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+
+  .error-container {
+    .error-message {
+      color: var(--mat-sys-error);
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+  }
+
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .progress-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-left: 4px solid transparent;
+
+    &:nth-child(odd) {
+      border-left-color: #8b5cf6;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(255, 255, 255, 0.95) 100%);
+    }
+
+    &:nth-child(even) {
+      border-left-color: #06b6d4;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(255, 255, 255, 0.95) 100%);
+    }
+
+    &:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+      border-left-width: 6px;
+    }
+
+    mat-card-header {
+      margin-bottom: 1rem;
+    }
+
+    mat-card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    mat-card-subtitle {
+      color: #8b5cf6;
+      font-weight: 500;
+    }
+
+    .progress-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      .date {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+    border-radius: 16px;
+    color: #64748b;
+    border: 2px dashed rgba(139, 92, 246, 0.3);
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  }
+}
+

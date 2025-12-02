@@ -1,0 +1,47 @@
+<div class="course-list-container">
+  <div class="header">
+    <h1>Cursos Disponibles</h1>
+    <button mat-raised-button color="primary" (click)="coursesService.refresh().subscribe()" 
+            [disabled]="coursesService.loading()">
+      <span *ngIf="!coursesService.loading()">🔄 Actualizar</span>
+      <span *ngIf="coursesService.loading()">Cargando...</span>
+    </button>
+  </div>
+
+  <div *ngIf="coursesService.loading()" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando cursos...</p>
+  </div>
+
+  <div *ngIf="coursesService.error()" class="error-container">
+    <p class="error-message">⚠️ {{ coursesService.error() }}</p>
+    <button mat-raised-button color="primary" (click)="coursesService.refresh().subscribe()">
+      Reintentar
+    </button>
+  </div>
+
+  <div *ngIf="!coursesService.loading() && !coursesService.error()" class="courses-grid">
+    <mat-card *ngFor="let c of coursesService.courses()" class="course-card">
+      <mat-card-header>
+        <mat-card-title>{{ c.title }}</mat-card-title>
+        <mat-card-subtitle>Módulo: {{ c.module }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ c.description }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="start(c.id)">
+          ▶️ Iniciar
+        </button>
+        <button mat-raised-button color="accent" (click)="complete(c.id)">
+          ✅ Completar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!coursesService.loading() && !coursesService.error() && coursesService.courses().length === 0" 
+       class="empty-state">
+    <p>No hay cursos disponibles</p>
+  </div>
+</div>
