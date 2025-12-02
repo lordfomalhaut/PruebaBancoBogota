@@ -5,13 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [FormsModule, MatCardModule, MatButtonModule, MatInputModule]
+  imports: [FormsModule, MatCardModule, MatButtonModule, MatInputModule, MatFormFieldModule, NgIf]
 })
 export class LoginComponent {
   username = '';

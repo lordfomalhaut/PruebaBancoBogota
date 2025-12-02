@@ -3,9 +3,9 @@
 html {
   @include mat.theme((
     color: (
-      primary: mat.$indigo-palette,
-      secondary: mat.$purple-palette,
-      tertiary: mat.$teal-palette,
+      primary: mat.$azure-palette,
+      secondary: mat.$blue-palette,
+      tertiary: mat.$cyan-palette,
     ),
     typography: Roboto,
     density: 0,
