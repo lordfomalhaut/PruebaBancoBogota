@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -18,7 +19,7 @@ import { NgIf } from '@angular/common';
       <a mat-button routerLink="/profile" *ngIf="auth.isLogged()">Mi Progreso</a>
       <a mat-button routerLink="/admin/courses" *ngIf="auth.isLogged() && auth.isAdmin()">Administración</a>
 
-      <button mat-stroked-button color="accent" *ngIf="!auth.isLogged()" routerLink="/login">Login</button>
+      <button mat-stroked-button color="accent" *ngIf="!auth.isLogged() && !isLoginPage" routerLink="/login">Login</button>
       <button mat-flat-button color="warn" *ngIf="auth.isLogged()" (click)="logout()">Logout</button>
     </mat-toolbar>
   `,
@@ -58,8 +59,25 @@ import { NgIf } from '@angular/common';
   `],
   imports: [MatToolbarModule, MatButtonModule, NgIf, RouterLink]
 })
-export class TopbarComponent {
+export class TopbarComponent implements OnInit, OnDestroy {
+  isLoginPage = false;
+  private subscription?: Subscription;
+
   constructor(public auth: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.isLoginPage = this.router.url === '/login';
+    this.subscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.isLoginPage = this.router.url === '/login';
+      });
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);

@@ -15,20 +15,23 @@
 
     h1 {
       margin: 0;
+      padding: 0.5rem 0;
       background: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       font-size: 2rem;
       font-weight: 700;
+      line-height: 1.2;
     }
   }
 
   .create-card {
     margin-bottom: 3rem;
     padding: 1.5rem;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 0.95) 100%);
-    border-left: 4px solid #6366f1;
+    background: white;
+    border: 2px solid #6366f1;
+    border-top: 4px solid #6366f1;
 
     mat-card-header {
       margin-bottom: 1.5rem;
@@ -93,13 +96,15 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    border-left: 4px solid #06b6d4;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(255, 255, 255, 0.95) 100%);
+    border: 2px solid #06b6d4;
+    border-top: 4px solid #06b6d4;
+    background: white;
 
     &:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 8px 24px rgba(6, 182, 212, 0.2);
-      border-left-width: 6px;
+      transform: translateY(-4px);
+      border-color: #06b6d4;
+      border-width: 2px;
+      border-top-width: 4px;
     }
 
     mat-card-header {
