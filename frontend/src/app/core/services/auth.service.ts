@@ -6,7 +6,7 @@ import { CoursesService } from './courses.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly api = 'http://localhost:3000/api/auth';
+  private readonly api = '/api/auth';
 
   private tokenSignal = signal<string | null>(localStorage.getItem('token'));
   private userSignal = signal<User | null>(

@@ -10,7 +10,7 @@
 
   <mat-card class="create-card">
     <mat-card-header>
-      <mat-card-title>Crear Nuevo Curso</mat-card-title>
+      <mat-card-title>{{ editingCourseId ? 'Editar Curso' : 'Crear Nuevo Curso' }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="form-fields">
@@ -32,8 +32,20 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="create()">
+      <button *ngIf="!editingCourseId" mat-raised-button color="primary" (click)="create()">
         Crear Curso
+      </button>
+      <button *ngIf="editingCourseId" mat-raised-button color="primary" (click)="update()" 
+              [disabled]="updatingCourseId !== null">
+        <span *ngIf="updatingCourseId === null">Actualizar Curso</span>
+        <span *ngIf="updatingCourseId !== null">
+          <span style="display: inline-block; width: 12px; height: 12px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle;"></span>
+          Actualizando...
+        </span>
+      </button>
+      <button *ngIf="editingCourseId" mat-raised-button color="accent" (click)="cancelEdit()" 
+              [disabled]="updatingCourseId !== null" style="margin-left: 0.5rem;">
+        Cancelar
       </button>
     </mat-card-actions>
   </mat-card>
@@ -54,7 +66,12 @@
     </div>
 
     <div *ngIf="!coursesService.loading() && !coursesService.error()" class="courses-grid">
-      <mat-card *ngFor="let c of coursesService.courses()" class="course-card">
+      <mat-card *ngFor="let c of coursesService.courses()" class="course-card" 
+                [class.updating]="updatingCourseId === c.id">
+        <div *ngIf="updatingCourseId === c.id" class="updating-overlay">
+          <div class="spinner-large"></div>
+          <p>Actualizando curso...</p>
+        </div>
         <mat-card-header>
           <mat-card-title>{{ c.title }}</mat-card-title>
           <mat-card-subtitle>Módulo: {{ c.module }}</mat-card-subtitle>
@@ -63,8 +80,13 @@
           <p>{{ c.description }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-raised-button color="warn" (click)="delete(c.id)">
-            🗑️ Eliminar
+          <button mat-raised-button color="primary" (click)="edit(c)" 
+                  [disabled]="editingCourseId === c.id || updatingCourseId !== null">
+            Editar
+          </button>
+          <button mat-raised-button color="warn" (click)="delete(c.id)" 
+                  [disabled]="editingCourseId === c.id || updatingCourseId !== null">
+            Eliminar
           </button>
         </mat-card-actions>
       </mat-card>

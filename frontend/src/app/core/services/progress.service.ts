@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProgressService {
-  private readonly api = 'http://localhost:3000/api/progress';
+  private readonly api = '/api/progress';
 
   private progressSignal = signal<Progress[]>([]);
   private loadingSignal = signal<boolean>(false);

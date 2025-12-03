@@ -6,7 +6,6 @@
 
   <div class="cards-grid">
     <mat-card class="dashboard-card" routerLink="/courses">
-      <div class="card-icon">📚</div>
       <mat-card-title>Ver Cursos</mat-card-title>
       <mat-card-content>
         <p>Explora todos los cursos disponibles y comienza tu aprendizaje</p>
@@ -14,7 +13,6 @@
     </mat-card>
 
     <mat-card class="dashboard-card" routerLink="/profile">
-      <div class="card-icon">👤</div>
       <mat-card-title>Mi Progreso</mat-card-title>
       <mat-card-content>
         <p>Revisa tu progreso y los cursos que has completado</p>
@@ -22,7 +20,6 @@
     </mat-card>
 
     <mat-card class="dashboard-card" routerLink="/admin/courses" *ngIf="auth.isAdmin()">
-      <div class="card-icon">⚙️</div>
       <mat-card-title>Administración</mat-card-title>
       <mat-card-content>
         <p>Gestiona los cursos y contenido de la plataforma</p>

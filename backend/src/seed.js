@@ -31,6 +31,8 @@ async function run() {
 
     await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_progress_user_course ON progress(user_id, course_id);`);
 
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_courses_module_title ON courses(module, title);`);
+
     const courses = [
       ['Fullstack', 'Intro a Node.js', 'Fundamentos de Node.js y Express'],
       ['Cloud', 'Introducción a AWS', 'Servicios básicos de AWS'],
@@ -40,7 +42,9 @@ async function run() {
 
     for (const c of courses) {
       await pool.query(
-        `INSERT INTO courses (module, title, description) VALUES ($1, $2, $3)`,
+        `INSERT INTO courses (module, title, description) 
+         VALUES ($1, $2, $3)
+         ON CONFLICT (module, title) DO NOTHING`,
         c
       );
     }

@@ -11,7 +11,7 @@ async function create(course) {
   const { module, title, description } = course;
   const result = await pool.query(
     `INSERT INTO courses (module, title, description)
-     VALUES ($1, $2, $3) RETURNING id`,
+     VALUES ($1, $2, $3) RETURNING id, module, title, description`,
     [module, title, description]
   );
   return result.rows[0];
@@ -28,10 +28,14 @@ async function findById(id) {
 async function update(id, course) {
   const { module, title, description } = course;
   const result = await pool.query(
-    `UPDATE courses SET module = $1, title = $2, description = $3 WHERE id = $4`,
+    `UPDATE courses SET module = $1, title = $2, description = $3 WHERE id = $4
+     RETURNING id, module, title, description`,
     [module, title, description, id]
   );
-  return result.rowCount;
+  if (result.rows.length === 0) {
+    return { changes: 0 };
+  }
+  return { changes: 1, course: result.rows[0] };
 }
 
 async function remove(id) {

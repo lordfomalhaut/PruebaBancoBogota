@@ -50,10 +50,12 @@ export class ProfileComponent implements OnInit {
   getProgressColor(percentage: number | undefined): string {
     if (percentage === undefined) return '#FFFFFF';
     if (percentage === 0) return '#FFFFFF';
-    if (percentage <= 25) return '#B3E5FC';
-    if (percentage <= 50) return '#80DEEA';
-    if (percentage <= 75) return '#4DD0E1';
-    return '#20B2AA';
+    if (percentage === 100) return '#0A72C7';
+    if (percentage <= 20) return '#BBDEFB';
+    if (percentage <= 40) return '#90CAF9';
+    if (percentage <= 60) return '#64B5F7';
+    if (percentage <= 80) return '#38A0F5';
+    return '#0D8BF2';
   }
 
   getChipTextColor(percentage: number | undefined): string {

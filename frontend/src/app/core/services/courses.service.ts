@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
-  private readonly api = 'http://localhost:3000/api/courses';
+  private readonly api = '/api/courses';
 
   private coursesSignal = signal<Course[]>([]);
   private loadingSignal = signal<boolean>(false);
@@ -80,6 +80,19 @@ export class CoursesService {
   }
 
   update(id: number, course: Partial<Course>) {
+    const current = this.coursesSignal();
+    const existingCourse = current.find(c => c.id === id);
+    
+    if (existingCourse) {
+      const optimisticUpdate = { ...existingCourse, ...course };
+      const index = current.findIndex(c => c.id === id);
+      if (index !== -1) {
+        current[index] = optimisticUpdate as Course;
+        this.coursesSignal.set([...current]);
+        localStorage.setItem('courses_cache', JSON.stringify(this.coursesSignal()));
+      }
+    }
+
     return this.http.put<Course>(`${this.api}/${id}`, course).pipe(
       tap(updatedCourse => {
         const current = this.coursesSignal();
@@ -91,6 +104,15 @@ export class CoursesService {
         }
       }),
       catchError(error => {
+        if (existingCourse) {
+          const current = this.coursesSignal();
+          const index = current.findIndex(c => c.id === id);
+          if (index !== -1) {
+            current[index] = existingCourse;
+            this.coursesSignal.set([...current]);
+            localStorage.setItem('courses_cache', JSON.stringify(this.coursesSignal()));
+          }
+        }
         this.errorSignal.set('Error al actualizar el curso');
         return throwError(() => error);
       })

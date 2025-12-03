@@ -1,7 +1,7 @@
 
 ## Requisitos
 
-- Node.js 18 o superior
+- Node.js 20 o superior
 - npm
 - PostgreSQL (para la base de datos)
 
@@ -117,7 +117,19 @@ La aplicación estará disponible en `http://localhost:4200`
 - `npm run build` - Compila para producción
 - `npm test` - Ejecuta las pruebas
 
+## Despliegue con Docker
+
+**Inicio rápido con Docker:**
+```bash
+docker-compose up --build
+```
+
+Luego accede a:
+- Frontend: http://localhost
+- Backend: http://localhost:3000
+
 ## Notas
 
-- El frontend se conecta automáticamente a `http://localhost:3000`
+- El frontend se conecta automáticamente a `http://localhost:3000` (desarrollo)
+- En Docker, el frontend usa rutas relativas `/api` que son entregadas por proxy por Nginx al backend
 

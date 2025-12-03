@@ -22,6 +22,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class AdminCoursesComponent implements OnInit {
   newCourse: { module?: string; title?: string; description?: string } = {};
+  editingCourseId: number | null = null;
+  updatingCourseId: number | null = null;
 
   constructor(
     public coursesService: CoursesService,
@@ -60,6 +62,44 @@ export class AdminCoursesComponent implements OnInit {
         this.snackBar.open('Error al crear el curso', 'Cerrar', { duration: 3000 });
       }
     });
+  }
+
+  edit(course: any) {
+    this.editingCourseId = course.id;
+    this.newCourse = {
+      module: course.module,
+      title: course.title,
+      description: course.description
+    };
+  }
+
+  update() {
+    if (!this.editingCourseId) return;
+    
+    if (!this.newCourse.module || !this.newCourse.title || !this.newCourse.description) {
+      this.snackBar.open('Por favor completa todos los campos', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    const courseId = this.editingCourseId;
+    this.updatingCourseId = courseId;
+
+    this.coursesService.update(courseId, this.newCourse).subscribe({
+      next: () => {
+        this.updatingCourseId = null;
+        this.cancelEdit();
+        this.snackBar.open('Curso actualizado correctamente', 'Cerrar', { duration: 2000 });
+      },
+      error: () => {
+        this.updatingCourseId = null;
+        this.snackBar.open('Error al actualizar el curso', 'Cerrar', { duration: 3000 });
+      }
+    });
+  }
+
+  cancelEdit() {
+    this.editingCourseId = null;
+    this.newCourse = {};
   }
 
   delete(id: number) {

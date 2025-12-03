@@ -14,8 +14,8 @@ async function createCourse(req, res) {
   if (!module || !title) return res.status(400).json({ message: 'module and title required' });
 
   try {
-    const result = await courseModel.create({ module, title, description });
-    res.status(201).json({ id: result.id });
+    const course = await courseModel.create({ module, title, description });
+    res.status(201).json(course);
   } catch (err) {
     res.status(500).json({ message: 'Error creating course', error: err.message });
   }
@@ -37,7 +37,7 @@ async function updateCourse(req, res) {
   try {
     const result = await courseModel.update(id, req.body);
     if (result.changes === 0) return res.status(404).json({ message: 'Course not found or no changes' });
-    res.json({ message: 'Updated' });
+    res.json(result.course);
   } catch (err) {
     res.status(500).json({ message: 'Error updating course', error: err.message });
   }

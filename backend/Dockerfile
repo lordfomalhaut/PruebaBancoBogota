@@ -1,19 +1,17 @@
 FROM node:18-alpine
 
-# Crear directorio de la app
 WORKDIR /usr/src/app
 
-# Copiar solo package.json
 COPY package*.json ./
 
-# Instalar solo dependencias en modo producción
-RUN npm ci --only=production
+RUN npm ci
 
-# Copiar el código fuente
 COPY src ./src
+COPY wait-for-postgres.js ./
+COPY start.sh ./
 
-# Exponer el puerto
+RUN chmod +x start.sh
+
 EXPOSE 3000
 
-# Comando de arranque
-CMD ["node", "src/app.js"]
+CMD ["./start.sh"]
