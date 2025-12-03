@@ -3,7 +3,7 @@
     <h1>Mi Progreso</h1>
     <button mat-raised-button color="primary" (click)="progressService.refresh().subscribe()" 
             [disabled]="progressService.loading()">
-      <span *ngIf="!progressService.loading()">🔄 Actualizar</span>
+      <span *ngIf="!progressService.loading()">Actualizar</span>
       <span *ngIf="progressService.loading()">Cargando...</span>
     </button>
   </div>
@@ -21,19 +21,49 @@
   </div>
 
   <div *ngIf="!progressService.loading() && !progressService.error()" class="progress-grid">
-    <mat-card *ngFor="let p of progressService.progress()" class="progress-card">
+    <mat-card *ngFor="let p of progressService.progress()" class="progress-card" [class.completed]="p.status === 'completado'">
+      <div class="ribbon" *ngIf="p.status === 'completado'">
+        <svg width="40" height="50" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ribbonGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+            </linearGradient>
+            <filter id="ribbonShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
+              <feOffset dx="0" dy="2" result="offsetblur"/>
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <path d="M2 0 L38 0 L38 35 L20 45 L2 35 Z" fill="url(#ribbonGradient)" filter="url(#ribbonShadow)" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/>
+        </svg>
+      </div>
       <mat-card-header>
         <mat-card-title>{{ p.title }}</mat-card-title>
         <mat-card-subtitle>Módulo: {{ p.module }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <div class="progress-info">
-          <mat-chip [color]="getStatusColor(p.status)" selected>
-            {{ p.status }}
+          <mat-chip [color]="getStatusColor(p.status)" selected *ngIf="p.status === 'iniciado'">
+            En Progreso
+          </mat-chip>
+          <mat-chip class="completed-chip" *ngIf="p.status === 'completado'">
+            Completado
           </mat-chip>
           <p class="date">Actualizado: {{ p.updated_at | date:'short' }}</p>
         </div>
       </mat-card-content>
+      <mat-card-actions *ngIf="p.status === 'iniciado'">
+        <button mat-raised-button color="primary" (click)="complete(p.course_id)">
+          Completar Curso
+        </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 

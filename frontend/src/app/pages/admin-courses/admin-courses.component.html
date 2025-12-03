@@ -3,7 +3,7 @@
     <h1>Administrar Cursos</h1>
     <button mat-raised-button color="primary" (click)="load()" 
             [disabled]="coursesService.loading()">
-      <span *ngIf="!coursesService.loading()">🔄 Actualizar</span>
+      <span *ngIf="!coursesService.loading()">Actualizar</span>
       <span *ngIf="coursesService.loading()">Cargando...</span>
     </button>
   </div>
@@ -33,7 +33,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" (click)="create()">
-        ➕ Crear Curso
+        Crear Curso
       </button>
     </mat-card-actions>
   </mat-card>

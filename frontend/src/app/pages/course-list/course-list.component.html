@@ -3,7 +3,7 @@
     <h1>Cursos Disponibles</h1>
     <button mat-raised-button color="primary" (click)="coursesService.refresh().subscribe()" 
             [disabled]="coursesService.loading()">
-      <span *ngIf="!coursesService.loading()">🔄 Actualizar</span>
+      <span *ngIf="!coursesService.loading()">Actualizar</span>
       <span *ngIf="coursesService.loading()">Cargando...</span>
     </button>
   </div>
@@ -31,10 +31,7 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-raised-button color="primary" (click)="start(c.id)">
-          ▶️ Iniciar
-        </button>
-        <button mat-raised-button color="accent" (click)="complete(c.id)">
-          ✅ Completar
+          Iniciar
         </button>
       </mat-card-actions>
     </mat-card>

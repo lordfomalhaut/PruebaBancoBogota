@@ -40,9 +40,22 @@ export class ProfileComponent implements OnInit {
         return 'primary';
       case 'in_progress':
       case 'en progreso':
+      case 'iniciado':
         return 'accent';
       default:
         return '';
     }
+  }
+
+  complete(courseId: number) {
+    this.progressService.complete(courseId).subscribe({
+      next: () => {
+        this.snackBar.open('Curso completado correctamente', 'Cerrar', { duration: 2000 });
+        this.progressService.refresh().subscribe();
+      },
+      error: () => {
+        this.snackBar.open('Error al completar el curso', 'Cerrar', { duration: 3000 });
+      }
+    });
   }
 }
