@@ -4,5 +4,6 @@ export interface Progress {
   title: string;
   module: string;
   status: 'iniciado' | 'completado';
+  percentage?: number;
   updated_at: string;
 }

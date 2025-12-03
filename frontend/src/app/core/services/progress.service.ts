@@ -17,7 +17,25 @@ export class ProgressService {
   error = computed(() => this.errorSignal());
 
   constructor(private http: HttpClient) {
-    const cached = localStorage.getItem('progress_cache');
+    this.loadFromCache();
+  }
+
+  private getCacheKey(): string {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        return `progress_cache_${user.id}`;
+      } catch (e) {
+        return 'progress_cache';
+      }
+    }
+    return 'progress_cache';
+  }
+
+  private loadFromCache() {
+    const cacheKey = this.getCacheKey();
+    const cached = localStorage.getItem(cacheKey);
     if (cached) {
       try {
         const progress = JSON.parse(cached);
@@ -26,6 +44,15 @@ export class ProgressService {
         console.error('Error loading cached progress', e);
       }
     }
+  }
+
+  clearProgress() {
+    this.progressSignal.set([]);
+    this.errorSignal.set(null);
+    const cacheKey = this.getCacheKey();
+    localStorage.removeItem(cacheKey);
+    localStorage.removeItem('progress_cache');
+    this.loadFromCache();
   }
 
   myProgress(forceRefresh = false) {
@@ -40,7 +67,8 @@ export class ProgressService {
       tap(progress => {
         this.progressSignal.set(progress);
         this.loadingSignal.set(false);
-        localStorage.setItem('progress_cache', JSON.stringify(progress));
+        const cacheKey = this.getCacheKey();
+        localStorage.setItem(cacheKey, JSON.stringify(progress));
       }),
       catchError(error => {
         this.loadingSignal.set(false);
@@ -62,7 +90,8 @@ export class ProgressService {
         } else {
           this.progressSignal.set([...current, newProgress]);
         }
-        localStorage.setItem('progress_cache', JSON.stringify(this.progressSignal()));
+        const cacheKey = this.getCacheKey();
+        localStorage.setItem(cacheKey, JSON.stringify(this.progressSignal()));
       }),
       catchError(error => {
         this.errorSignal.set('Error al iniciar el curso');
@@ -79,7 +108,8 @@ export class ProgressService {
         if (index !== -1) {
           current[index] = updatedProgress;
           this.progressSignal.set([...current]);
-          localStorage.setItem('progress_cache', JSON.stringify(this.progressSignal()));
+          const cacheKey = this.getCacheKey();
+        localStorage.setItem(cacheKey, JSON.stringify(this.progressSignal()));
         }
       }),
       catchError(error => {

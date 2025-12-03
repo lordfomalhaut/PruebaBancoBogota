@@ -21,7 +21,29 @@
   </div>
 
   <div *ngIf="!coursesService.loading() && !coursesService.error()" class="courses-grid">
-    <mat-card *ngFor="let c of coursesService.courses()" class="course-card">
+    <mat-card *ngFor="let c of coursesService.courses()" class="course-card" [class.completed]="isCompleted(c.id)">
+      <div class="ribbon" *ngIf="isCompleted(c.id)">
+        <svg width="45" height="50" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ribbonGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#efb810;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#d4a017;stop-opacity:1" />
+            </linearGradient>
+            <filter id="ribbonShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
+              <feOffset dx="0" dy="2" result="offsetblur"/>
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <path d="M2 0 L38 0 L38 35 L20 45 L2 35 Z" fill="url(#ribbonGradient)" filter="url(#ribbonShadow)" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/>
+        </svg>
+      </div>
       <mat-card-header>
         <mat-card-title>{{ c.title }}</mat-card-title>
         <mat-card-subtitle>Módulo: {{ c.module }}</mat-card-subtitle>
@@ -30,8 +52,10 @@
         <p>{{ c.description }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="start(c.id)">
-          Iniciar
+        <button mat-raised-button 
+                [color]="isCompleted(c.id) ? 'accent' : 'primary'" 
+                (click)="isCompleted(c.id) ? viewAgain(c.id) : start(c.id)">
+          {{ isCompleted(c.id) ? 'Volver a ver' : 'Iniciar' }}
         </button>
       </mat-card-actions>
     </mat-card>

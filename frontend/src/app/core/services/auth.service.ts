@@ -1,6 +1,8 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
+import { ProgressService } from './progress.service';
+import { CoursesService } from './courses.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,6 +18,9 @@ export class AuthService {
   isLogged = computed(() => !!this.tokenSignal());
   isAdmin = computed(() => this.userSignal()?.role === 'admin');
 
+  private progressService = inject(ProgressService);
+  private coursesService = inject(CoursesService);
+
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string) {
@@ -30,6 +35,8 @@ export class AuthService {
     this.userSignal.set(user);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
+    this.progressService.clearProgress();
+    this.coursesService.clearCourses();
   }
 
   logout() {

@@ -31,6 +31,13 @@ export class CourseListComponent implements OnInit {
         this.snackBar.open('Error al cargar los cursos', 'Cerrar', { duration: 3000 });
       }
     });
+    this.progressService.myProgress().subscribe();
+  }
+
+  isCompleted(courseId: number): boolean {
+    const progress = this.progressService.progress();
+    const courseProgress = progress.find(p => p.course_id === courseId);
+    return courseProgress?.status === 'completado';
   }
 
   start(id: number) {
@@ -56,5 +63,9 @@ export class CourseListComponent implements OnInit {
         this.snackBar.open('Error al completar el curso', 'Cerrar', { duration: 3000 });
       }
     });
+  }
+
+  viewAgain(id: number) {
+    this.snackBar.open('Puedes revisar el contenido del curso nuevamente', 'Cerrar', { duration: 2000 });
   }
 }

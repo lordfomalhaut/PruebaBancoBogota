@@ -114,4 +114,10 @@ export class CoursesService {
   refresh() {
     return this.list(true);
   }
+
+  clearCourses() {
+    this.coursesSignal.set([]);
+    this.errorSignal.set(null);
+    localStorage.removeItem('courses_cache');
+  }
 }

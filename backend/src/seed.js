@@ -23,8 +23,11 @@ async function run() {
       user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
       course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
       status TEXT,
+      percentage INTEGER DEFAULT 0,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`);
+
+    await pool.query(`ALTER TABLE progress ADD COLUMN IF NOT EXISTS percentage INTEGER DEFAULT 0;`);
 
     await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_progress_user_course ON progress(user_id, course_id);`);
 

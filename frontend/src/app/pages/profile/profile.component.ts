@@ -47,6 +47,23 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  getProgressColor(percentage: number | undefined): string {
+    if (percentage === undefined) return '#FFFFFF';
+    if (percentage === 0) return '#FFFFFF';
+    if (percentage <= 25) return '#B3E5FC';
+    if (percentage <= 50) return '#80DEEA';
+    if (percentage <= 75) return '#4DD0E1';
+    return '#20B2AA';
+  }
+
+  getChipTextColor(percentage: number | undefined): string {
+    if (percentage === undefined || percentage === 0) return '#1e293b';
+    if (percentage <= 25) return '#0277BD';
+    if (percentage <= 50) return '#00838F';
+    if (percentage <= 75) return '#00695C';
+    return '#004D40';
+  }
+
   complete(courseId: number) {
     this.progressService.complete(courseId).subscribe({
       next: () => {
