@@ -1,7 +1,7 @@
 
 ## Requisitos
 
-- Node.js 18 o superior
+- Node.js 20 o superior
 - npm
 - PostgreSQL (para la base de datos)
 
